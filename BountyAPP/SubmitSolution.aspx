@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head runat="server">
+    <link rel="stylesheet" href="StyleSheet.css" / >
     <title>Submit Solution</title>
 </head>
 <body>

@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Poster Dashboard</title>
+    <link rel="stylesheet" href="StyleSheet.css" / >
 </head>
 <body>
     <h2>Welcome, Problem Posters</h2>

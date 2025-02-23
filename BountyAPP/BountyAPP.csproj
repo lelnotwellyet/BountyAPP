@@ -72,6 +72,7 @@
     <Content Include="PosterDashboard.aspx" />
     <Content Include="registration.aspx" />
     <Content Include="SolverDashboard.aspx" />
+    <Content Include="StyleSheet.css" />
     <Content Include="SubmitSolution.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
