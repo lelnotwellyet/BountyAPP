@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ConfirmOTP.aspx" />
     <Content Include="login.aspx" />
     <Content Include="PosterDashboard.aspx" />
     <Content Include="registration.aspx" />
@@ -75,6 +76,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfirmOTP.aspx.cs">
+      <DependentUpon>ConfirmOTP.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfirmOTP.aspx.designer.cs">
+      <DependentUpon>ConfirmOTP.aspx</DependentUpon>
+    </Compile>
     <Compile Include="login.aspx.cs">
       <DependentUpon>login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

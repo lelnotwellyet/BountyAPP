@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
@@ -8,16 +9,16 @@ namespace BountyAPP
 {
     public partial class PosterDashboard : System.Web.UI.Page
     {
-        string connectionString = "Data Source=DESKTOP-71QL0R7\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["BountyDB"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserEmail"] == null)
             {
-                Response.Redirect("Login.aspx");
+                Response.Redirect("Login.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
-
-            if (!IsPostBack)
+            else if (!IsPostBack)
             {
                 LoadProblems();
             }
@@ -25,23 +26,24 @@ namespace BountyAPP
 
         protected void btnPostProblem_Click(object sender, EventArgs e)
         {
-            string userEmail = Session["UserEmail"]?.ToString();
-            if (string.IsNullOrEmpty(userEmail))
+            if (Session["UserEmail"] == null)
             {
-                Response.Write("Error: User not logged in!");
+                Response.Write("Error: Session expired.");
                 return;
             }
+
+            string userEmail = Session["UserEmail"].ToString();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = "INSERT INTO Problems (Title, Description, Bounty, PosterEmail, SolverEmail, Solved, Solution, Paid) " +
-                             "VALUES (@Title, @Description, @Bounty, @Email, '', 0, '', 0)";
+                               "VALUES (@Title, @Description, @Bounty, @Email, '', 0, '', 0)";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Title", TextBox1.Text);
-                    cmd.Parameters.AddWithValue("@Description", TextBox2.Text);
-                    cmd.Parameters.AddWithValue("@Bounty", decimal.Parse(TextBox3.Text));
+                    cmd.Parameters.AddWithValue("@Title", TextBox1.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Description", TextBox2.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Bounty", decimal.Parse(TextBox3.Text.Trim()));
                     cmd.Parameters.AddWithValue("@Email", userEmail);
 
                     conn.Open();
@@ -55,20 +57,10 @@ namespace BountyAPP
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             int problemId = Convert.ToInt32(e.CommandArgument);
+            bool solved = e.CommandName == "Approve";
+            bool paid = e.CommandName == "PaySolver";
 
-            switch (e.CommandName)
-            {
-                case "Approve":
-                    UpdateProblemStatus(problemId, true, false);
-                    break;
-                case "Reject":
-                    UpdateProblemStatus(problemId, false, false);
-                    break;
-                case "PaySolver":
-                    UpdateProblemStatus(problemId, true, true);
-                    break;
-            }
-
+            UpdateProblemStatus(problemId, solved, paid);
             LoadProblems();
         }
 
@@ -92,28 +84,16 @@ namespace BountyAPP
 
         private void LoadProblems()
         {
-            string userEmail = Session["UserEmail"]?.ToString();
-            if (string.IsNullOrEmpty(userEmail)) return;
+            if (Session["UserEmail"] == null) return;
+            string userEmail = Session["UserEmail"].ToString();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = @"SELECT 
-                    ProblemID, 
-                    Title, 
-                    Description, 
-                    Bounty, 
-                    SolverEmail,
-                    Solved,
-                    Solution,
-                    Paid
-                    FROM Problems 
-                    WHERE PosterEmail = @Email";
+                string query = "SELECT ProblemID, Title, Description, Bounty, SolverEmail, Solved, Solution, Paid FROM Problems WHERE PosterEmail = @Email";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Email", userEmail);
-
-                    conn.Open();
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
