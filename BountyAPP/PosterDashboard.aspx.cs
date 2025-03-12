@@ -21,6 +21,7 @@ namespace BountyAPP
             else if (!IsPostBack)
             {
                 LoadProblems();
+                LoadUserWallet(Session["UserEmail"].ToString());
             }
         }
 
@@ -57,10 +58,19 @@ namespace BountyAPP
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             int problemId = Convert.ToInt32(e.CommandArgument);
-            bool solved = e.CommandName == "Approve";
-            bool paid = e.CommandName == "PaySolver";
 
-            UpdateProblemStatus(problemId, solved, paid);
+            if (e.CommandName == "PaySolver")
+            {
+                Session["ProblemID"] = problemId;
+                UpdateProblemStatus(problemId, true, true);
+                Response.Redirect("payment gateway.aspx",false);
+
+            }
+            else if (e.CommandName == "Approve")
+            {
+                UpdateProblemStatus(problemId, true, false); // Set only Solved to true
+            }
+
             LoadProblems();
         }
 
@@ -102,5 +112,23 @@ namespace BountyAPP
                 }
             }
         }
+        protected void LoadUserWallet(string userEmail)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT wallet FROM Users WHERE Email = @UserEmail";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@UserEmail",userEmail);
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+                    Session["Wallet"] = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
+                    Label1.Text = "Wallet Balance: " + Session["Wallet"];   
+                }
+            }
+        }
+
+
+
     }
 }

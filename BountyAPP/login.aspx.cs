@@ -12,14 +12,14 @@ namespace BountyAPP
 
         protected void btnLogin_Clicked(object sender, EventArgs e)
         {
-            string connectionString = "Data Source=DESKTOP-71QL0R7\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
+            string connectionString = "Data Source=LAPTOP-TIKAU9EV\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = "SELECT Role FROM Users WHERE Email = @Email AND Password = @Password";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Email", TextBox1.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Password", TextBox2.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Email", TextBox1.Text);
+                    cmd.Parameters.AddWithValue("@Password", TextBox2.Text);
 
                     try
                     {

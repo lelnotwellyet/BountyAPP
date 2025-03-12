@@ -27,7 +27,7 @@ namespace BountyAPP
 
         private void LoadProblems()
         {
-            string connectionString = "Data Source=DESKTOP-71QL0R7\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
+            string connectionString = "Data Source=LAPTOP-TIKAU9EV\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"
@@ -71,7 +71,7 @@ namespace BountyAPP
 
             Button btn = (Button)sender;
             int problemID = Convert.ToInt32(btn.CommandArgument);
-            string connectionString = "Data Source=DESKTOP-71QL0R7\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
+            string connectionString = "Data Source=LAPTOP-TIKAU9EV\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {

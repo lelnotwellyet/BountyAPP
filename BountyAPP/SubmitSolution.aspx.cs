@@ -25,7 +25,7 @@ namespace BountyAPP
             int problemID;
             if (int.TryParse(Request.QueryString["ProblemID"], out problemID))
             {
-                string connectionString = "Data Source=DESKTOP-71QL0R7\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
+                string connectionString = "Data Source=LAPTOP-TIKAU9EV\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT Title, Description FROM Problems WHERE ProblemID = @ProblemID";
@@ -64,7 +64,7 @@ namespace BountyAPP
                     return;
                 }
 
-                string connectionString = "Data Source=DESKTOP-71QL0R7\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
+                string connectionString = "Data Source=LAPTOP-TIKAU9EV\\SQLEXPRESS;Initial Catalog=BountyDB;Integrated Security=True;Encrypt=False";
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string query = "UPDATE Problems SET Solution = @Solution WHERE ProblemID = @ProblemID AND SolverEmail = @SolverEmail";
@@ -85,6 +85,7 @@ namespace BountyAPP
                         {
                             Response.Write("<script>alert('Error submitting solution. Please try again.');</script>");
                         }
+                        conn.Close();
                     }
                 }
             }

@@ -69,11 +69,13 @@
   <ItemGroup>
     <Content Include="ConfirmOTP.aspx" />
     <Content Include="login.aspx" />
+    <Content Include="payment gateway.aspx" />
     <Content Include="PosterDashboard.aspx" />
     <Content Include="registration.aspx" />
     <Content Include="SolverDashboard.aspx" />
     <Content Include="StyleSheet.css" />
     <Content Include="SubmitSolution.aspx" />
+    <Content Include="wallet.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +92,13 @@
     </Compile>
     <Compile Include="login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="payment gateway.aspx.cs">
+      <DependentUpon>payment gateway.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="payment gateway.aspx.designer.cs">
+      <DependentUpon>payment gateway.aspx</DependentUpon>
     </Compile>
     <Compile Include="PosterDashboard.aspx.cs">
       <DependentUpon>PosterDashboard.aspx</DependentUpon>
